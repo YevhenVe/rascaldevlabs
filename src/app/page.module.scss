@@ -1,45 +1,46 @@
+@use "../styles/variables" as *;
+
 .page {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   min-height: 100vh;
-}
 
-.main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  text-align: center;
-  padding: 2rem;
-}
+  .main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $gap;
+    text-align: center;
+    padding: $padding;
+    flex: 1;
 
-.title {
-  font-size: 3rem;
-  font-weight: 700;
-  line-height: 1.2;
-}
+    .title {
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
 
-.description {
-  font-size: 1.25rem;
-  line-height: 1.6;
-  color: #666;
+    .description {
+      font-size: 1.25rem;
+      line-height: 1.6;
+      color: $color-description-light;
 
-  code {
-    background: #f4f4f5;
-    padding: 0.2rem 0.4rem;
-    border-radius: 4px;
-    font-size: 0.9em;
-  }
-}
+      [data-theme="dark"] & {
+        color: $color-description-dark;
+      }
 
-@media (prefers-color-scheme: dark) {
-  .description {
-    color: #a1a1aa;
+      code {
+        background: $color-code-bg-light;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-size: 0.9em;
 
-    code {
-      background: #27272a;
+        [data-theme="dark"] & {
+          background: $color-code-bg-dark;
+        }
+      }
     }
   }
 }
