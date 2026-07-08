@@ -1,0 +1,119 @@
+@use "../../styles/variables" as *;
+
+$track-width: 60px;
+$track-height: 28px;
+$thumb-size: 22px;
+$track-padding: 2px;
+$icon-center: 6px;
+$color-thumb-light: #f59e0b;
+$color-thumb-dark: #6366f1;
+$color-thumb-dark-data-theme: #818cf8;
+$color-toggle-border-light: rgba(0, 0, 0, 0.12);
+$color-toggle-border-dark: rgba(255, 255, 255, 0.15);
+$color-toggle-bg-light: #e4e4e7;
+$color-toggle-bg-dark: #27272a;
+$color-icon-light: #71717a;
+$color-icon-dark: #a1a1aa;
+
+$inner-width: $track-width - $track-padding * 3; // 48px
+$dark-translate: $inner-width - $thumb-size;       // 26px
+
+.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+
+  .track {
+    position: relative;
+    box-sizing: border-box;
+    width: $track-width;
+    height: $track-height;
+    padding: $track-padding;
+    border-radius: 9999px;
+    border: 1px solid $color-toggle-border-light;
+    background: $color-toggle-bg-light;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: background 0.3s, border-color 0.3s;
+
+    [data-theme="dark"] & {
+      background: $color-toggle-bg-dark;
+      border-color: $color-toggle-border-dark;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    }
+
+    // Static icons outside the thumb
+    .iconBase {
+      position: absolute;
+      top: $track-padding;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 14px;
+      height: $thumb-size;
+      color: $color-icon-light;
+      transition: opacity 0.3s, color 0.3s;
+
+      [data-theme="dark"] & {
+        color: $color-icon-dark;
+      }
+    }
+
+    // Sun icon — left, centered where thumb sits in light mode
+    .iconSunOutside {
+      left: $icon-center;
+    }
+
+    // Moon icon — right, centered where thumb sits in dark mode
+    .iconMoonOutside {
+      right: $icon-center;
+    }
+
+    // Dimmed state (when the thumb is on the other side)
+    .iconDimmed {
+      opacity: 0.4;
+    }
+
+    // Moving thumb — fills the padding area exactly
+    .thumb {
+      position: absolute;
+      top: $track-padding;
+      left: $track-padding;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: $thumb-size;
+      height: $thumb-size;
+      border-radius: 50%;
+      transform: translateX(0);
+      transition:
+        transform 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6),
+        background 0.3s,
+        box-shadow 0.3s;
+      z-index: 2;
+      color: #fff;
+
+      // Light mode — thumb flush left (2px from outer edge)
+      &Light {
+        transform: translateX(0);
+        background: $color-thumb-light;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+      }
+
+      // Dark mode — thumb flush right (2px from outer edge)
+      &Dark {
+        transform: translateX($dark-translate);
+        background: $color-thumb-dark;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+
+        [data-theme="dark"] & {
+          background: $color-thumb-dark-data-theme;
+        }
+      }
+    }
+  }
+}

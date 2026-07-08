@@ -1,0 +1,119 @@
+@use "../../styles/variables" as *;
+
+.header {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  z-index: 1000;
+  transform: translateX(-50%);
+  width: 1280px;
+  height: 80px;
+  border-radius: 26px;
+  padding: 0 24px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(30px);
+  background: rgba(13, 13, 12, 0.4);
+
+  // Light theme
+  [data-theme="light"] & {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  // Mobile
+  @media (max-width: 1320px) {
+    width: calc(100% - 40px);
+  }
+
+  @media (max-width: 600px) {
+    padding: 0 16px;
+    top: 12px;
+    height: 52px;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    position: relative;
+
+    // Left: logo + site name
+    .logoSection {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: inherit;
+      flex-shrink: 0;
+
+      .logoImage {
+        display: block;
+        width: 48px;
+        height: 48px;
+      }
+
+      .siteName {
+        font-size: 0.95rem;
+        font-weight: 600;
+        white-space: nowrap;
+
+        @media (max-width: 600px) {
+          display: none;
+        }
+      }
+    }
+
+    // Center: navigation links
+    .links {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+
+      .link {
+        display: inline-block;
+        padding: 6px 12px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #e4e4e7;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: background 0.2s, color 0.2s;
+
+        // Light theme link color
+        [data-theme="light"] & {
+          color: #27272a;
+        }
+
+        // Hover: semi-transparent background (macOS style)
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+
+          [data-theme="light"] & {
+            background: rgba(0, 0, 0, 0.06);
+          }
+        }
+
+        // Active tab
+        &--active {
+          background: rgba(255, 255, 255, 0.15);
+
+          [data-theme="light"] & {
+            background: rgba(0, 0, 0, 0.08);
+          }
+        }
+
+        @media (max-width: 600px) {
+          padding: 4px 8px;
+          font-size: 0.8rem;
+        }
+      }
+    }
+
+    // Right: theme toggle
+  }
+}
