@@ -1,0 +1,53 @@
+@use "../../styles/variables" as *;
+
+.button {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--color-header-border);
+  border-radius: 12px;
+  background: var(--color-surface-hover);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+
+  span {
+    display: block;
+    width: 16px;
+    height: 1.5px;
+    border-radius: 2px;
+    background: var(--color-text);
+    transition: transform 0.25s ease, opacity 0.2s ease;
+  }
+
+  &:hover {
+    background: var(--color-surface-active);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-accent;
+    outline-offset: 2px;
+  }
+}
+
+.buttonOpen {
+  span:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+
+  span:nth-child(2) {
+    opacity: 0;
+  }
+
+  span:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+}

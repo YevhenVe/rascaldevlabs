@@ -1,9 +1,16 @@
-import Container from "@/components/Container/Container";
+import type { Metadata } from "next";
+import Projects from "@/components/Projects/Projects";
 
-export default function Projects() {
+export const metadata: Metadata = {
+  title: "Projects | Rascal Dev Labs",
+  description:
+    "Selected full-stack and JAMstack projects by Rascal Dev Labs — from UI to production.",
+};
+
+export default function ProjectsPage() {
   return (
-    <Container>
-      <div>Projects page</div>
-    </Container>
+    <main>
+      <Projects variant="page" />
+    </main>
   );
 }

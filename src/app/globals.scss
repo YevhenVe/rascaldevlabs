@@ -5,12 +5,32 @@
 [data-theme="light"] {
   --color-bg: #{$color-bg-light};
   --color-text: #{$color-text-light};
+  --color-text-muted: #{$color-description-light};
+  --color-accent: #{$color-accent};
+  --color-accent-soft: #{$color-accent-glow};
+  --color-header-bg: rgba(242, 228, 207, 0); // 100% transparent
+  --color-header-bg-solid: #{$color-bg-light};
+  --color-header-border: rgba(27, 27, 27, 0.08);
+  --color-surface-hover: rgba(27, 27, 27, 0.05);
+  --color-surface-active: rgba(201, 125, 74, 0.14);
+  --color-card-border: rgba(27, 27, 27, 0.12);
+  --color-outline-rgb: 27, 27, 27;
 }
 
 // === Dark theme ===
 [data-theme="dark"] {
   --color-bg: #{$color-bg-dark};
   --color-text: #{$color-text-dark};
+  --color-text-muted: #{$color-description-dark};
+  --color-accent: #{$color-accent};
+  --color-accent-soft: #{$color-accent-glow};
+  --color-header-bg: rgba(22, 26, 36, 0.8); // 20% transparent
+  --color-header-bg-solid: #{$color-bg-dark};
+  --color-header-border: rgba(242, 228, 207, 0.1);
+  --color-surface-hover: rgba(242, 228, 207, 0.06);
+  --color-surface-active: rgba(201, 125, 74, 0.2);
+  --color-card-border: rgba(242, 228, 207, 0.14);
+  --color-outline-rgb: 242, 228, 207;
 }
 
 // === Global reset ===
@@ -31,12 +51,22 @@ body {
   font-family: $font-family-base;
   background: var(--color-bg);
   color: var(--color-text);
+  // Reserve space for fixed header; content scrolls underneath on scroll
+  padding-top: $header-height;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  @media (max-width: 600px) {
-    padding-top: 80px;
+  @media (max-width: 768px) {
+    padding-top: 64px;
   }
+}
+
+// Poppins everywhere (buttons/inputs often reset font)
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
 }
 
 a {

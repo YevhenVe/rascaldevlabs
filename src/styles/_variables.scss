@@ -1,27 +1,37 @@
-// Colors
-$color-bg-light: #ffffff;
-$color-bg-dark: #1d1815;
-$color-text-light: #171717;
-$color-text-dark: #ededed;
-$color-description-light: #666;
-$color-description-dark: #a1a1aa;
-$color-code-bg-light: #f4f4f5;
-$color-code-bg-dark: #27272a;
-$color-border-light: #e4e4e7;
-$color-border-dark: #27272a;
-$color-header-bg-dark: #18181b;
-$color-link-hover-light: #4f46e5;
-$color-link-hover-dark: #818cf8;
-$color-link-active-light: #3730a3;
-$color-link-active-dark: #6366f1;
+// =============================================
+// Colors — Light theme
+// =============================================
+$color-bg-light: #F2E4CF;
+$color-text-light: #1B1B1B;
 
+// =============================================
+// Colors — Dark theme
+// =============================================
+$color-bg-dark: #161A24;
+$color-text-dark: #F2E4CF;
+
+// =============================================
+// Accent (shared)
+// =============================================
+$color-accent: #C97D4A;
+$color-accent-glow: rgba(201, 125, 74, 0.4);
+
+// Muted text
+$color-description-light: #5a5249;
+$color-description-dark: #b8a992;
+
+// =============================================
 // Sizes
-$header-height: 64px;
-$max-width: 1200px;
+// =============================================
+$header-height: 80px;
+$max-width: 1280px;
 $gap: 2rem;
 $padding: 2rem;
 $gap-links: 1.5rem;
-$logo-size: 40px;
+$logo-size: 48px;
 
-// Fonts
-$font-family-base: var(--font-poppins), sans-serif;
+// =============================================
+// Fonts — Poppins is the global UI font
+// =============================================
+$font-family-base: var(--font-poppins), "Poppins", sans-serif;
+$font-family-heading: var(--font-poppins), "Poppins", sans-serif;

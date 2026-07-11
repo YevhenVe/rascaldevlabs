@@ -1,0 +1,102 @@
+@use "../../styles/variables" as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  @media (max-width: 560px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 0.75rem 0.95rem;
+  border-radius: 12px;
+  border: 1px solid var(--color-card-border);
+  background: rgba(var(--color-outline-rgb), 0.04);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &::placeholder {
+    color: var(--color-text-muted);
+    opacity: 0.7;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: rgba(201, 125, 74, 0.35);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+    box-shadow: 0 0 0 3px var(--color-accent-soft);
+    background: rgba(var(--color-outline-rgb), 0.06);
+  }
+
+  &:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+}
+
+.textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.error {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #c44;
+}
+
+.success {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.25rem 0;
+}
+
+.successTitle {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.successText {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}

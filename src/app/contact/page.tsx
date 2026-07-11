@@ -1,9 +1,16 @@
-import Container from "@/components/Container/Container";
+import type { Metadata } from "next";
+import Contact from "@/components/Contact/Contact";
 
-export default function Projects() {
+export const metadata: Metadata = {
+  title: "Contacts | Rascal Dev Labs",
+  description:
+    "Get in touch with Rascal Dev Labs — leave a message and I’ll get back to you personally.",
+};
+
+export default function ContactPage() {
   return (
-    <Container>
-      <div>Contact page</div>
-    </Container>
+    <main>
+      <Contact variant="page" />
+    </main>
   );
 }

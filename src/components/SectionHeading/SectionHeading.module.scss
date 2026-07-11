@@ -1,0 +1,38 @@
+@use "../../styles/variables" as *;
+
+.heading {
+  margin: 0 0 1.15rem;
+  font-family: $font-family-base;
+  font-size: clamp(1.85rem, 3.8vw, 2.65rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+}
+
+.hero {
+  margin-bottom: 1.25rem;
+  font-size: clamp(2.35rem, 5.2vw, 3.75rem);
+  line-height: 1.08;
+}
+
+.accent {
+  background: linear-gradient(
+    120deg,
+    $color-accent 0%,
+    #e0a06a 50%,
+    $color-accent 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lead {
+  margin: 0;
+  max-width: 36rem;
+  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  line-height: 1.65;
+  color: var(--color-text-muted);
+}

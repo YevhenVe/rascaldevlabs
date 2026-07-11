@@ -1,0 +1,38 @@
+@use "../../styles/variables" as *;
+
+.section {
+  position: relative;
+  width: 100%;
+  padding: 5rem 0 6rem;
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-header-border);
+  scroll-margin-top: $header-height;
+
+  @media (max-width: 768px) {
+    padding: 3.5rem 0 4rem;
+    scroll-margin-top: 64px;
+  }
+}
+
+.page {
+  min-height: calc(100svh - #{$header-height});
+  padding-top: 3.5rem;
+  padding-bottom: 5rem;
+  border-top: none;
+
+  @media (max-width: 768px) {
+    min-height: calc(100svh - 64px);
+    padding-top: 2rem;
+  }
+}
+
+.inner {
+  width: 100%;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 0 $padding;
+
+  @media (max-width: 768px) {
+    padding: 0 1.25rem;
+  }
+}
