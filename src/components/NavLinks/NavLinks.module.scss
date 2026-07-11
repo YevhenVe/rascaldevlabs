@@ -1,0 +1,82 @@
+@use "../../styles/variables" as *;
+
+.nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+
+  @media (max-width: 768px) {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    transform: none;
+    padding: 1rem 1.25rem 1.5rem;
+    background: var(--color-header-bg-solid);
+    border-bottom: 1px solid var(--color-header-border);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+}
+
+.navOpen {
+  @media (max-width: 768px) {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+  }
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--color-text-muted);
+  border-radius: 9999px;
+  transition: color 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    color: var(--color-text);
+    background: var(--color-surface-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-accent;
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 768px) {
+    justify-content: flex-start;
+    padding: 0.85rem 1rem;
+    font-size: 1rem;
+    border-radius: 12px;
+  }
+}
+
+.linkActive {
+  color: var(--color-text);
+  background: var(--color-surface-active);
+  font-weight: 600;
+}

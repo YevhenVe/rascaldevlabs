@@ -1,71 +1,49 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import styles from "./Header.module.scss";
+import { useEffect, useState } from "react";
+import BrandLogo from "@/components/BrandLogo/BrandLogo";
+import HamburgerMenu from "@/components/HamburgerMenu/HamburgerMenu";
+import NavLinks from "@/components/NavLinks/NavLinks";
 import ThemeToggle from "@/components/ThemeToggle/ThemeToggle";
-
-const navLinks = [
-  { href: "/about", label: "About" },
-  { href: "/projects", label: "Projects" },
-  { href: "/contact", label: "Contacts" },
-];
+import styles from "./Header.module.scss";
 
 export default function Header() {
-  const pathname = usePathname();
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem("theme") as "light" | "dark" | null;
-    if (saved) {
-      setTheme(saved);
-      document.documentElement.setAttribute("data-theme", saved);
-    } else {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const initial = prefersDark ? "dark" : "light";
-      setTheme(initial);
-      document.documentElement.setAttribute("data-theme", initial);
-    }
-  }, []);
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
-  const toggleTheme = () => {
-    const next = theme === "light" ? "dark" : "light";
-    setTheme(next);
-    document.documentElement.setAttribute("data-theme", next);
-    localStorage.setItem("theme", next);
-  };
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <header className={styles.header}>
-      <nav className={styles.nav}>
-        <Link href="/" className={styles.logoSection}>
-          <Image
-            src="/assets/logo.svg"
-            alt="Rascal Dev Labs"
-            width={28}
-            height={28}
-            className={styles.logoImage}
+      <div className={styles.inner}>
+        <BrandLogo size="md" priority onClick={closeMenu} />
+
+        <NavLinks id="main-nav" isOpen={menuOpen} onNavigate={closeMenu} />
+
+        <div className={styles.actions}>
+          <ThemeToggle />
+          <HamburgerMenu
+            isOpen={menuOpen}
+            onToggle={() => setMenuOpen((open) => !open)}
+            controlsId="main-nav"
           />
-          <span className={styles.siteName}>Rascal Dev Labs</span>
-        </Link>
+        </div>
+      </div>
 
-        <ul className={styles.links}>
-          {navLinks.map(({ href, label }) => (
-            <li key={href}>
-              <Link
-                href={href}
-                className={`${styles.link} ${pathname === href ? styles["link--active"] : ""}`}
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <ThemeToggle theme={theme} onToggle={toggleTheme} />
-      </nav>
+      {menuOpen && (
+        <button
+          type="button"
+          className={styles.backdrop}
+          aria-label="Close menu"
+          onClick={closeMenu}
+        />
+      )}
     </header>
   );
 }

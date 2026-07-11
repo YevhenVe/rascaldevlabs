@@ -1,15 +1,15 @@
-import Container from "@/components/Container/Container";
-import styles from "./page.module.scss";
+import About from "@/components/About/About";
+import Contact from "@/components/Contact/Contact";
+import Hero from "@/components/Hero/Hero";
+import Projects from "@/components/Projects/Projects";
 
 export default function Home() {
   return (
-    <Container>
-      <main className={styles.main}>
-        <h1 className={styles.title}>Rascal Dev Labs</h1>
-        <p className={styles.description}>
-          Get started by editing <code>src/app/page.tsx</code>
-        </p>
-      </main>
-    </Container>
+    <main>
+      <Hero />
+      <About variant="home" />
+      <Projects variant="home" />
+      <Contact variant="home" />
+    </main>
   );
 }

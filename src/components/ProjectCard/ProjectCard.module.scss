@@ -1,0 +1,143 @@
+@use "../../styles/variables" as *;
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 260px;
+  padding: 1.25rem 1.35rem;
+  border-radius: 20px;
+  border: 1px solid var(--color-card-border);
+  overflow: hidden;
+  isolation: isolate;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  background: rgba(var(--color-outline-rgb), 0.04);
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: rgba(201, 125, 74, 0.45);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-accent;
+    outline-offset: 3px;
+  }
+}
+
+// Full-bleed background image from prop (--card-bg)
+.media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: rgba(var(--color-outline-rgb), 0.06);
+  background-image: var(--card-bg);
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.4s ease;
+
+  .card:hover & {
+    transform: scale(1.04);
+  }
+}
+
+// Bottom → top scrim for text readability
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(22, 26, 36, 0.88) 0%,
+    rgba(22, 26, 36, 0.45) 42%,
+    rgba(22, 26, 36, 0.12) 72%,
+    transparent 100%
+  );
+
+  [data-theme="light"] & {
+    background: linear-gradient(
+      to top,
+      rgba(27, 27, 27, 0.72) 0%,
+      rgba(27, 27, 27, 0.35) 45%,
+      rgba(27, 27, 27, 0.08) 72%,
+      transparent 100%
+    );
+  }
+}
+
+.top,
+.bottom {
+  position: relative;
+  z-index: 2;
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.7rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(8px);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.title {
+  margin: 0 0 0.4rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: #fff;
+}
+
+.description {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.78);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.year {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: $color-accent;
+  line-height: 1.2;
+  padding-bottom: 0.1rem;
+}

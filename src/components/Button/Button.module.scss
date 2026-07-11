@@ -1,0 +1,62 @@
+@use "../../styles/variables" as *;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.75rem 1.45rem;
+  border-radius: 9999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+
+  &:focus-visible {
+    outline: 2px solid $color-accent;
+    outline-offset: 3px;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: wait;
+  }
+}
+
+.primary {
+  border: 1px solid transparent;
+  color: #fff;
+  background: $color-accent;
+  box-shadow: 0 8px 24px var(--color-accent-soft);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    background: #d48a55;
+    box-shadow: 0 12px 28px var(--color-accent-soft);
+  }
+}
+
+.secondary {
+  border: 1px solid var(--color-card-border);
+  color: var(--color-text);
+  background: rgba(var(--color-outline-rgb), 0.06);
+  backdrop-filter: blur(8px);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    background: var(--color-surface-hover);
+    border-color: rgba(201, 125, 74, 0.45);
+  }
+}
