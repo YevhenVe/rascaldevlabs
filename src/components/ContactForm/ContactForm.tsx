@@ -81,6 +81,7 @@ export default function ContactForm() {
           <span className={styles.label}>First name</span>
           <input
             className={styles.input}
+            suppressHydrationWarning
             type="text"
             name="firstName"
             autoComplete="given-name"
@@ -92,6 +93,7 @@ export default function ContactForm() {
           <span className={styles.label}>Last name</span>
           <input
             className={styles.input}
+            suppressHydrationWarning
             type="text"
             name="lastName"
             autoComplete="family-name"
@@ -105,6 +107,7 @@ export default function ContactForm() {
         <span className={styles.label}>Email</span>
         <input
           className={styles.input}
+          suppressHydrationWarning
           type="email"
           name="email"
           autoComplete="email"
@@ -117,6 +120,7 @@ export default function ContactForm() {
         <span className={styles.label}>Subject</span>
         <input
           className={styles.input}
+          suppressHydrationWarning
           type="text"
           name="subject"
           required

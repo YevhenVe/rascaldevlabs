@@ -31,10 +31,12 @@ export default function Button({
     .filter(Boolean)
     .join(" ");
 
+  const label = <span className={styles.label}>{children}</span>;
+
   if (href) {
     return (
       <Link href={href} className={classNames} onClick={onClick}>
-        {children}
+        {label}
       </Link>
     );
   }
@@ -46,7 +48,7 @@ export default function Button({
       disabled={disabled}
       onClick={onClick}
     >
-      {children}
+      {label}
     </button>
   );
 }

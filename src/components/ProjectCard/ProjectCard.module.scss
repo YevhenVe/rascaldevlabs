@@ -130,6 +130,16 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+
+  :global(p) {
+    margin: 0;
+    display: inline;
+  }
+
+  :global(ul) {
+    margin: 0;
+    padding-left: 1.1rem;
+  }
 }
 
 .year {

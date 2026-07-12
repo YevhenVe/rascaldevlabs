@@ -41,7 +41,10 @@ export default function ProjectCard({
       <div className={styles.bottom}>
         <div className={styles.copy}>
           <h3 className={styles.title}>{title}</h3>
-          <p className={styles.description}>{description}</p>
+          <div
+            className={styles.description}
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
         </div>
         <span className={styles.year}>{year}</span>
       </div>
