@@ -5,6 +5,7 @@ import CookieConsent from "@/components/CookieConsent/CookieConsent";
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
 import ThemeSync from "@/components/ThemeSync/ThemeSync";
+import { AuthProvider } from "@/context/AuthContext";
 import { THEME_KEY, type Theme } from "@/lib/theme";
 import "./globals.scss";
 
@@ -46,11 +47,13 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body className={poppins.className}>
-        <ThemeSync />
-        <Header />
-        {children}
-        <Footer />
-        <CookieConsent />
+        <AuthProvider>
+          <ThemeSync />
+          <Header />
+          {children}
+          <Footer />
+          <CookieConsent />
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,0 +1,85 @@
+@use "../../styles/variables" as *;
+
+.gate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100svh - #{$header-height});
+  padding: 2rem;
+
+  @media (max-width: 768px) {
+    min-height: calc(100svh - 64px);
+  }
+}
+
+.status {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+}
+
+.shell {
+  width: 100%;
+}
+
+.page {
+  width: 100%;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 3rem $padding 5rem;
+
+  @media (max-width: 768px) {
+    padding: 2rem 1.25rem 3.5rem;
+  }
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.title {
+  margin: 0 0 0.4rem;
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+}
+
+.meta {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.panel {
+  padding: 1.5rem 1.5rem;
+  border-radius: 18px;
+  border: 1px solid var(--color-card-border);
+  background: rgba(var(--color-outline-rgb), 0.03);
+}
+
+.panelText {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: var(--color-text-muted);
+
+  strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+}

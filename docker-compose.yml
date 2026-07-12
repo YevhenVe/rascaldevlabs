@@ -8,6 +8,8 @@ services:
     container_name: rascaldevlabs-next-app
     ports:
       - "3000:3000"
+    env_file:
+      - .env.local # <-- Передаем переменные для продакшна
     environment:
       - NODE_ENV=production
     restart: unless-stopped
@@ -22,6 +24,8 @@ services:
     volumes:
       - ./src:/app/src
       - ./public:/app/public
+    env_file:
+      - .env.local # <-- Передаем переменные для разработки
     environment:
       - NODE_ENV=development
     restart: unless-stopped
