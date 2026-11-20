@@ -9,6 +9,7 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
+import { generateKeyBetween } from "fractional-indexing";
 import Button from "@/components/Button/Button";
 import { db } from "@/lib/firebase";
 import type { ItemFormData, ItemFormProps } from "@/types/item-form";
@@ -50,6 +51,7 @@ function toFormState(data?: ItemFormProps["initialData"]): ItemFormData {
 
 export default function ItemForm({
   initialData = null,
+  topOrder = null,
   onClose,
 }: ItemFormProps) {
   // Parent remounts this form with key={id|"new"} so initialData is applied cleanly
@@ -115,6 +117,8 @@ export default function ItemForm({
       } else {
         await addDoc(collection(db, "projects"), {
           ...data,
+          // New projects land at the top of the manual order
+          order: generateKeyBetween(null, topOrder),
           createdAt: serverTimestamp(),
         });
       }

@@ -14,6 +14,8 @@ export interface ProjectFormData extends ItemFormData {
 
 export interface ItemFormProps {
   initialData?: ProjectFormData | null;
+  /** `order` key of the first project; a new project is placed before it. */
+  topOrder?: string | null;
   onClose?: () => void;
 }
 

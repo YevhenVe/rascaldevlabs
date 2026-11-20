@@ -1,8 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 import { motion } from "framer-motion";
-import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  updateDoc,
+  writeBatch,
+} from "firebase/firestore";
+import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/adapter/element-adapter";
+import { reorder } from "@atlaskit/pragmatic-drag-and-drop/utils/reorder";
+import { extractClosestEdge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge/extract-closest-edge";
+import type { Edge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/types";
+import { generateKeyBetween, generateNKeysBetween } from "fractional-indexing";
 import Button from "@/components/Button/Button";
 import Eyebrow from "@/components/Eyebrow/Eyebrow";
 import ItemForm from "@/components/ItemForm/ItemForm";
@@ -16,9 +28,30 @@ import { useAuth } from "@/context/AuthContext";
 import { db } from "@/lib/firebase";
 import { fadeUp, stagger } from "@/lib/motion";
 import type { ProjectFormData } from "@/types/item-form";
+import SortableProjectItem, { isProjectDragData } from "./SortableProjectItem";
 import styles from "./Projects.module.scss";
 
-type ProjectItem = ProjectFormData;
+type ProjectItem = ProjectFormData & {
+  /** Fractional-index key for manual ordering; null for legacy docs. */
+  order: string | null;
+};
+
+/**
+ * Manual order first (plain code-unit comparison, as fractional-indexing
+ * requires — NOT localeCompare). Legacy docs without `order` go last,
+ * by year desc then title, until the first drag assigns them a key.
+ */
+function compareProjects(a: ProjectItem, b: ProjectItem): number {
+  if (a.order !== null && b.order !== null) {
+    if (a.order !== b.order) return a.order < b.order ? -1 : 1;
+    return a.id < b.id ? -1 : 1;
+  }
+  if (a.order !== null) return -1;
+  if (b.order !== null) return 1;
+
+  const yearDiff = (Number(b.year) || 0) - (Number(a.year) || 0);
+  return yearDiff || a.title.localeCompare(b.title);
+}
 
 interface ProjectsProps {
   variant?: "home" | "page";
@@ -49,16 +82,11 @@ export default function Projects({ variant = "home" }: ProjectsProps) {
             year: data.year ?? "",
             link: String(data.link ?? "#"),
             background: String(data.background ?? ""),
+            order: typeof data.order === "string" ? data.order : null,
           };
         });
 
-        // Newest years first (numeric — works for "2024" and 2024)
-        items.sort((a, b) => {
-          const yearA = Number(a.year) || 0;
-          const yearB = Number(b.year) || 0;
-          if (yearB !== yearA) return yearB - yearA;
-          return a.title.localeCompare(b.title);
-        });
+        items.sort(compareProjects);
 
         setProjectsList(isPage ? items : items.slice(0, 3));
         setIsLoading(false);
@@ -71,6 +99,67 @@ export default function Projects({ variant = "home" }: ProjectsProps) {
 
     return unsubscribe;
   }, [isPage]);
+
+  // Reads the latest projectsList without re-subscribing the monitor.
+  const moveProject = useEffectEvent(
+    async (sourceId: string, targetId: string, edge: Edge | null) => {
+      const list = projectsList;
+      const startIndex = list.findIndex((p) => p.id === sourceId);
+      const targetIndex = list.findIndex((p) => p.id === targetId);
+      if (startIndex === -1 || targetIndex === -1) return;
+
+      const placeAfter = edge === "right" || edge === "bottom";
+      let finishIndex = targetIndex + (placeAfter ? 1 : 0);
+      if (startIndex < finishIndex) finishIndex -= 1;
+      if (finishIndex === startIndex) return;
+
+      const reordered = reorder({ list, startIndex, finishIndex });
+      const orders = list.map((p) => p.order);
+      const needsFullRewrite =
+        orders.includes(null) || new Set(orders).size !== orders.length;
+
+      try {
+        if (needsFullRewrite) {
+          // One-time migration (or duplicate repair): key every project.
+          const keys = generateNKeysBetween(null, null, reordered.length);
+          const batch = writeBatch(db);
+          reordered.forEach((p, i) => {
+            batch.update(doc(db, "projects", p.id), { order: keys[i] });
+          });
+          await batch.commit();
+        } else {
+          // Normal case: a single write for the moved card only.
+          const before = reordered[finishIndex - 1]?.order ?? null;
+          const after = reordered[finishIndex + 1]?.order ?? null;
+          await updateDoc(doc(db, "projects", sourceId), {
+            order: generateKeyBetween(before, after),
+          });
+        }
+      } catch {
+        window.alert("Failed to reorder projects. Check Firestore rules.");
+      }
+    },
+  );
+
+  useEffect(() => {
+    if (!canEdit) return;
+
+    return monitorForElements({
+      canMonitor: ({ source }) => isProjectDragData(source.data),
+      onDrop: ({ source, location }) => {
+        const target = location.current.dropTargets[0];
+        if (!target) return;
+        if (!isProjectDragData(source.data) || !isProjectDragData(target.data)) {
+          return;
+        }
+        void moveProject(
+          source.data.id,
+          target.data.id,
+          extractClosestEdge(target.data),
+        );
+      },
+    });
+  }, [canEdit]);
 
   function closeForm() {
     setFormOpen(false);
@@ -127,6 +216,7 @@ export default function Projects({ variant = "home" }: ProjectsProps) {
         <ItemForm
           key={editingProject?.id ?? "new"}
           initialData={editingProject}
+          topOrder={projectsList[0]?.order ?? null}
           onClose={closeForm}
         />
       )}
@@ -178,36 +268,39 @@ export default function Projects({ variant = "home" }: ProjectsProps) {
           viewport={{ once: true, amount: 0.12 }}
         >
           {projectsList.map((project) => (
-            <motion.li key={project.id} className={styles.item} variants={fadeUp}>
-              <div className={styles.cardWrap}>
-                <ProjectCard
-                  tag={project.tag}
-                  title={project.title}
-                  description={project.description}
-                  year={project.year}
-                  link={project.link}
-                  background={project.background}
-                />
-                {canEdit && (
-                  <div className={styles.adminActions}>
-                    <button
-                      type="button"
-                      className={styles.editBtn}
-                      onClick={() => handleEdit(project)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      type="button"
-                      className={styles.deleteBtn}
-                      onClick={() => handleDelete(project.id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                )}
-              </div>
-            </motion.li>
+            <SortableProjectItem
+              key={project.id}
+              id={project.id}
+              title={project.title}
+              enabled={canEdit}
+              actions={
+                <>
+                  <button
+                    type="button"
+                    className={styles.editBtn}
+                    onClick={() => handleEdit(project)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.deleteBtn}
+                    onClick={() => handleDelete(project.id)}
+                  >
+                    Delete
+                  </button>
+                </>
+              }
+            >
+              <ProjectCard
+                tag={project.tag}
+                title={project.title}
+                description={project.description}
+                year={project.year}
+                link={project.link}
+                background={project.background}
+              />
+            </SortableProjectItem>
           ))}
         </motion.ul>
       )}
