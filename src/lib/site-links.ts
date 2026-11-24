@@ -39,6 +39,20 @@ export const extraLinks: SiteLink[] = [
   },
 ];
 
+/** Legal pages (footer + sitemap) */
+export const legalLinks: SiteLink[] = [
+  {
+    href: "/privacy",
+    label: "Privacy Policy",
+    description: "How contact form and site data are handled",
+  },
+  {
+    href: "/terms",
+    label: "Terms of Use",
+    description: "Rules for using this website",
+  },
+];
+
 /** Full list for sitemap page (home first, then nav, then extras without dupes) */
 export function getAllSiteLinks(): SiteLink[] {
   const byHref = new Map<string, SiteLink>();
@@ -46,6 +60,7 @@ export function getAllSiteLinks(): SiteLink[] {
     { href: "/", label: "Home", description: "Rascal Dev Labs — solo product studio" },
     ...navLinks,
     ...extraLinks.filter((l) => l.href !== "/"),
+    ...legalLinks,
   ]) {
     byHref.set(link.href, link);
   }

@@ -64,7 +64,8 @@ export default function CookieConsent() {
             This site uses cookies and browser storage for theme preference and
             basic functionality (for example, remembering that you accepted this
             notice). By continuing, you agree to this limited use of local data.
-            See our <Link href="/sitemap">sitemap</Link> for site pages.
+            No analytics or tracking. Details in our{" "}
+            <Link href="/privacy">Privacy Policy</Link>.
           </p>
         </div>
         <button type="button" className={styles.button} onClick={accept}>

@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Link from "next/link";
 import Button from "@/components/Button/Button";
 import {
   GOOGLE_FORM_ACTION,
@@ -148,6 +149,11 @@ export default function ContactForm() {
       <Button type="submit" disabled={status === "submitting"}>
         {status === "submitting" ? "Sending…" : "Send message"}
       </Button>
+
+      <p className={styles.notice}>
+        By sending this form you agree to the processing of your data as
+        described in our <Link href="/privacy">Privacy Policy</Link>.
+      </p>
     </form>
   );
 }

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import BrandLogo from "@/components/BrandLogo/BrandLogo";
-import { extraLinks, navLinks } from "@/lib/site-links";
+import { extraLinks, legalLinks, navLinks } from "@/lib/site-links";
 import styles from "./Footer.module.scss";
 
 const year = new Date().getFullYear();
@@ -44,6 +44,17 @@ export default function Footer() {
               <li>
                 <Link href="/contact">Start a project</Link>
               </li>
+            </ul>
+          </div>
+
+          <div className={styles.col}>
+            <p className={styles.colTitle}>Legal</p>
+            <ul className={styles.list}>
+              {legalLinks.map(({ href, label }) => (
+                <li key={href}>
+                  <Link href={href}>{label}</Link>
+                </li>
+              ))}
             </ul>
           </div>
         </nav>
